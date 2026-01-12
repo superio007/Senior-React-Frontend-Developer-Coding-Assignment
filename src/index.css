@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/* Base styles */
+body {
+  @apply m-0 font-sans text-base leading-normal text-slate-800 bg-slate-50 min-h-screen;
+}
+
+#root {
+  @apply min-h-screen;
+}
+
+/* Global focus styles for accessibility */
+:focus {
+  @apply outline-none;
+}
+
+:focus-visible {
+  @apply outline-2 outline-blue-500 outline-offset-2;
+}
+
+/* Custom spinner animation - Tailwind's animate-spin works but we keep this for the specific timing */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
