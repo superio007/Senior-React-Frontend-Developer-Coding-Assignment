@@ -16,28 +16,26 @@ const DEBOUNCE_DELAY = 300;
 /**
  * Main page component for the user management dashboard.
  * Integrates search, sort, and modal functionality.
- *
- * Requirements: 1.1, 2.1, 2.2, 2.4, 3.1, 3.2, 4.1, 5.1, 5.2, 6.1, 7.1
  */
 export const UserListPage: React.FC = () => {
   // Data fetching
   const { users, isLoading, error, refetch } = useUsers();
 
-  // Search state with debouncing (Requirements 2.1, 2.2, 7.1)
+  // Search state with debouncing
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm = useDebounce(searchTerm, DEBOUNCE_DELAY);
 
-  // Sort state (Requirements 3.1, 3.2)
+  // Sort state
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
-  // Selected user and modal state (Requirement 4.1)
+  // Selected user and modal state
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const triggerElementRef = useRef<HTMLElement | null>(null);
 
   // Modal hook with focus restoration callback
   const handleModalClose = useCallback(() => {
     setSelectedUser(null);
-    // Return focus to the element that triggered the modal (Requirement 8.3)
+    // Return focus to the element that triggered the modal
     if (triggerElementRef.current) {
       triggerElementRef.current.focus();
       triggerElementRef.current = null;
@@ -46,18 +44,18 @@ export const UserListPage: React.FC = () => {
 
   const { isOpen, open, close } = useModal(handleModalClose);
 
-  // Compute filtered and sorted users with useMemo (Requirement 7.1)
+  // Compute filtered and sorted users with useMemo
   const filteredAndSortedUsers = useMemo(() => {
     const filtered = filterUsersByName(users, debouncedSearchTerm);
     return sortUsersByName(filtered, sortDirection);
   }, [users, debouncedSearchTerm, sortDirection]);
 
-  // Handle sort toggle (Requirement 3.1)
+  // Handle sort toggle
   const handleSortToggle = useCallback(() => {
     setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
   }, []);
 
-  // Handle user click to open modal (Requirement 4.1)
+  // Handle user click to open modal
   const handleUserClick = useCallback(
     (user: User) => {
       // Store the currently focused element for focus restoration
@@ -73,7 +71,7 @@ export const UserListPage: React.FC = () => {
     close();
   }, [close]);
 
-  // Render loading state (Requirement 5.1)
+  // Render loading state
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto p-6 sm:p-4">
@@ -82,7 +80,7 @@ export const UserListPage: React.FC = () => {
     );
   }
 
-  // Render error state (Requirement 6.1)
+  // Render error state
   if (error) {
     return (
       <div className="max-w-7xl mx-auto p-6 sm:p-4">
@@ -111,7 +109,7 @@ export const UserListPage: React.FC = () => {
         <SortControl direction={sortDirection} onToggle={handleSortToggle} />
       </div>
 
-      <main className="min-h-[300px]">
+      <main className="min-h-75">
         <UserList
           users={filteredAndSortedUsers}
           onUserClick={handleUserClick}

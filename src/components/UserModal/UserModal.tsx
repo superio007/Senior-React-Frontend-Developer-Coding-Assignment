@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import type { User } from "../../types";
+import { X } from "lucide-react";
 
 export interface UserModalProps {
   user: User | null;
@@ -10,9 +11,7 @@ export interface UserModalProps {
 /**
  * Modal component displaying detailed user information.
  * Implements focus trap, overlay click to close, and ARIA attributes for accessibility.
- * Focus restoration when modal closes is handled by the parent component (Requirement 8.3).
- *
- * Requirements: 4.1, 4.2, 4.3, 4.5, 8.1
+ * Focus restoration when modal closes is handled by the parent component.
  */
 export const UserModal: React.FC<UserModalProps> = ({
   user,
@@ -34,7 +33,7 @@ export const UserModal: React.FC<UserModalProps> = ({
     }
   }, [isOpen]);
 
-  // Focus trap implementation (Requirement 4.5)
+  // Focus trap implementation
   const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
     if (event.key === "Tab" && modalRef.current) {
       const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(
@@ -53,7 +52,7 @@ export const UserModal: React.FC<UserModalProps> = ({
     }
   }, []);
 
-  // Handle overlay click to close (Requirement 4.3)
+  // Handle overlay click to close
   const handleOverlayClick = useCallback(
     (event: React.MouseEvent) => {
       if (event.target === event.currentTarget) {
@@ -71,7 +70,7 @@ export const UserModal: React.FC<UserModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[1000]"
+      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-1000"
       onClick={handleOverlayClick}
       aria-hidden="true"
     >
@@ -96,7 +95,7 @@ export const UserModal: React.FC<UserModalProps> = ({
             onClick={onClose}
             aria-label="Close modal"
           >
-            ×
+            <X />
           </button>
         </header>
 
